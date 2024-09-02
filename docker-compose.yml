@@ -6,9 +6,9 @@ services:
     container_name: chatbot_vm
     build:  # 컨테이너 이미지를 빌드하기 위한 설정입니다.
       context: ./chatbot  # Dockerfile이 위치한 디렉토리를 지정합니다.
-      dockerfile: Dockerfile  # 사용할 Dockerfile의 이름을 지정합니다.
+      dockerfile: Dockerfile.chatbot  # 사용할 Dockerfile의 이름을 지정합니다.
     ports:  # 호스트와 컨테이너 간의 포트 매핑을 정의합니다.
-      - "8000:8000"
+      - "8478:8478"
     volumes:
       - ./chatbot:/app  # 호스트의 ./chatbot 디렉토리를 컨테이너의 /app 디렉토리로 마운트합니다.
     depends_on:  # 이 서비스가 의존하는 다른 서비스를 정의합니다.
@@ -25,7 +25,9 @@ services:
       - "9200:9200"
     volumes:  # 호스트와 컨테이너 간의 디렉토리 또는 파일 마운트를 정의합니다.
       - esdata:/usr/share/elasticsearch/data  # 호스트의 esdata 볼륨을 컨테이너의 /usr/share/elasticsearch/data 디렉토리로 마운트합니다.
+    networks:
+      - app-network  # 네트워크 설정
 
-volumes:  # Docker 볼륨을 정의합니다.
-  esdata:  # esdata라는 이름의 볼륨을 정의합니다.
-    driver: local  # 로컬 드라이버를 사용하여 볼륨을 생성합니다.
+networks:
+  app-network:
+    driver: bridge  # 브리지 네트워크를 사용하여 두 서비스가 서로 통신할 수 있도록 설정
